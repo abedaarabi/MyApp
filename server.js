@@ -6,6 +6,9 @@ const express = require("express");
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const indexRouter = require("./routes/index");
+const authorRouter = require("./routes/authors");
+const bodyParser = require("body-parser");
+
 //to use ejs view engine
 app.set("view engine", "ejs");
 //to get the view pages from view folder
@@ -15,6 +18,8 @@ app.set("layout", "layouts/layout");
 app.use(expressLayouts);
 //Ask Younes
 app.use(express.static("public"));
+
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }));
 
 /**----------------------------------------------------------- */
 //conect Mongo
@@ -30,7 +35,8 @@ db.once("open", () => {
 /**----------------------------------------------------------- */
 
 app.use("/", indexRouter);
+app.use("/authors", authorRouter);
 
 app.listen(process.env.PORT || 7070, () => {
-  console.log("app listening on PORT 7070");
+  console.log("App listening on PORT 7070");
 });
